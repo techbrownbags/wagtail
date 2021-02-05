@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<h1><a href="{{self.url}}">{{ self.custom_title }}</a></h1>
+
+<div class="row">
+    <div class="col">
+        {% for block in self.content %}
+            {% include_block block %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}
