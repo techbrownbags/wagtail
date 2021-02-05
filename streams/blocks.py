@@ -59,3 +59,45 @@ class CardBlock(blocks.StructBlock):
         template = "streams/card_block.html"
         icon = "edit"
         label = "Staff Cards"
+
+
+class LinkStructValue(blocks.StructValue):
+    """ additional logic for urls"""
+
+    def url(self):
+        button_page = self.get('button_page')
+        button_url = self.get('button_url')
+        url = None
+        if button_page:
+            url = button_page.url
+        elif button_url:
+            url = button_url
+        return url
+
+
+    def title(self):
+        button_page = self.get('button_page')
+        button_url = self.get('button_url')
+        title = None
+        if button_page:
+            title = button_page.title
+        elif button_url:
+            title = self.get('button_title')
+            if not title:
+                title = button_url
+        return title
+
+class ButtonBlock(blocks.StructBlock):
+    """An external and internal URL"""
+
+    button_page = blocks.PageChooserBlock(required=False,
+                                          help_text='If selected this url will be used first')
+    button_url = blocks.URLBlock(required=False,
+                                 help_text='If selected this url will be used last')
+    button_title = blocks.CharBlock(required=False, help_text='Overrides default title')
+
+    class Meta: #noqa
+        template = "streams/button_block.html"
+        icon = "olaceholder"
+        label = "Single Button"
+        value_class = LinkStructValue
